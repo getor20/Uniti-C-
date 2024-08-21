@@ -28,36 +28,4 @@ public class Player_Controller : MonoBehaviour
         movementDirection = context.ReadValue<Vector2>();
     }
 
-    public Transform player; // —сылка на игрока
-
-    /*void Update()
-    {
-        transform.position = new Vector3(player.position.x, transform.position.y, transform.position.z);
-
-    }*/
-
-    public float parallaxSpeed;
-    private float startPos;
-    private float length;
-
-    void Start()
-    {
-        startPos = transform.position.x;
-        length = GetComponent<SpriteRenderer>().bounds.size.x;
-    }
-
-    void Update()
-    {
-        transform.position = new Vector3(player.position.x, transform.position.y, transform.position.z);
-        float temp = (Camera.main.transform.position.x
- * (1 - parallaxSpeed));
-        float
- dist = (temp - startPos);
-
-        if (temp > startPos + length) startPos = temp;
-        else if (temp < startPos - length) startPos = temp;
-
-        transform.position = new Vector3(startPos + dist, transform.position.y);
-    }
-
 }
