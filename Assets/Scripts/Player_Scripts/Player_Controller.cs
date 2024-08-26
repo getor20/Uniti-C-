@@ -44,13 +44,20 @@ public class Player_Controller : MonoBehaviour
 
     public void OnMove(InputAction.CallbackContext context)
     {
+        speed = 5f;
         movementDirection = context.ReadValue<Vector2>();
         SetFacingDirection(movementDirection);
     }
 
+    public void Acceleration(InputAction.CallbackContext context)
+    {
+        speed = 10;
+    }
+
     public void OnJump(InputAction.CallbackContext context)
     {
-        if (Touching_Directions.IsGraund)
+        
+        if (Touching_Directions.IsGraund || Touching_Directions.IsGraundRight || Touching_Directions.IsGraundLeft)
         {
             rigidbody.velocity = new Vector2(rigidbody.velocity.x, jump);
         }
