@@ -72,6 +72,12 @@ public class Player_Controller : MonoBehaviour
         }
     }
 
+    private void WallJump()
+    {
+        Vector2 wallJump = touching_Directions.OnWall ? Vector2.right : Vector2.left;
+        Jump(Vector2.up + wallJump);
+    }    
+
     private void SetFacingDirection(Vector2 direction)
     {
         if (direction.x > 0 && !IsFacingRight)
