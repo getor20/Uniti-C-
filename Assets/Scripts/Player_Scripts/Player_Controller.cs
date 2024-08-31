@@ -36,9 +36,13 @@ public class Player_Controller : MonoBehaviour
 
     private void FixedUpdate()
     {
+        Move(movementDirection);
+    }
+
+    private void Move(Vector2 direction)
+    {
         rigidbody.velocity = new Vector2(movementDirection.x * speed, rigidbody.velocity.y);
-        
-    }      
+    }
 
     public void OnMove(InputAction.CallbackContext context)
     {
@@ -49,7 +53,7 @@ public class Player_Controller : MonoBehaviour
 
     public void Acceleration(InputAction.CallbackContext context)
     {
-        speed += 10;
+        speed = 10;
     }
 
     public void OnJump(InputAction.CallbackContext context)
