@@ -58,7 +58,11 @@ public class Player_Controller : MonoBehaviour
 
     public void Acceleration(InputAction.CallbackContext context)
     {
-        speed = 10;
+        if (context.started)
+        {
+            speed = 10;
+        }
+        
     }
 
     public void OnJump(InputAction.CallbackContext context)
