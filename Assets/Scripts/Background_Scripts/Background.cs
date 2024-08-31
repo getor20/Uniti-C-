@@ -2,8 +2,9 @@ using UnityEngine;
 
 public class Background : MonoBehaviour
 {
+    public Transform target;
     private void Update()
     {
-        transform.position = Camera.main.transform.position;
+        transform.position = target.position;
     }
 }
