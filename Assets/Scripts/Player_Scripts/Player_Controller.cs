@@ -10,7 +10,7 @@ public class Player_Controller : MonoBehaviour
     public float jump = 6f;
 
     private Vector2 movementDirection = Vector2.zero;
-    private Touching_Directions Touching_Directions;
+    private Touching_Directions touching_Directions;
 
     private bool _isFacingRight = true;
 
@@ -31,7 +31,7 @@ public class Player_Controller : MonoBehaviour
     private void Awake()
     {
         rigidbody = GetComponent<Rigidbody2D>();
-        Touching_Directions = GetComponent<Touching_Directions>();
+        touching_Directions = GetComponent<Touching_Directions>();
     }
 
     private void FixedUpdate()
@@ -42,6 +42,11 @@ public class Player_Controller : MonoBehaviour
     private void Move(Vector2 direction)
     {
         rigidbody.velocity = new Vector2(movementDirection.x * speed, rigidbody.velocity.y);
+    }
+
+    private void Jump(Vector2 direction)
+    {
+        rigidbody.AddForce(direction * jump, ForceMode2D.Impulse);
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -58,10 +63,12 @@ public class Player_Controller : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        
-        if (Touching_Directions.IsGraund || Touching_Directions.IsGraundRight || Touching_Directions.IsGraundLeft)
+        if (context.started)
         {
-            rigidbody.velocity = new Vector2(rigidbody.velocity.x, jump);
+            if (touching_Directions.OnGraund)
+            {
+                Jump(Vector2.up);
+            }
         }
     }
 
