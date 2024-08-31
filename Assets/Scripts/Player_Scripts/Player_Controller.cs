@@ -69,6 +69,10 @@ public class Player_Controller : MonoBehaviour
             {
                 Jump(Vector2.up);
             }
+            else if (touching_Directions.OnWall)
+            {
+                Jump(Vector2.down);
+            }
         }
     }
 
