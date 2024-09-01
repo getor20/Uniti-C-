@@ -801,7 +801,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
-  jump: 5
+  jump: 6
+  slideSpeed: 1
+  wallSlideLerp: 10
+  canMove: 0
+  wallSlide: 0
+  sliding: 0
+  wallJump: 0
 --- !u!212 &730675422
 SpriteRenderer:
   m_ObjectHideFlags: 0

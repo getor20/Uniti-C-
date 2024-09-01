@@ -6,15 +6,17 @@ using UnityEngine.InputSystem;
 public class Player_Controller : MonoBehaviour
 {
     private Rigidbody2D rigidbody;
+    private Touching_Directions touching_Directions;
+
 
     private Vector2 moveInput;
-    private Touching_Directions touching_Directions;
 
     [Header("Static")]
     [Space]
     public float speed = 5f;
     public float jump = 6f;
-    public float slideSpeed = 2f;
+    public float slideSpeed = 1f;
+    public float wallSlideLerp = 10f;
 
     [Space]
 
@@ -82,7 +84,15 @@ public class Player_Controller : MonoBehaviour
                 rigidbody.velocity = new Vector2(rigidbody.velocity.x, -slideSpeed);
             }
         }
+
+        if (touching_Directions.OnGraund)
+        {
+            wallSlide = false;
+            sliding = false;
+            wallJump = false;
+        }
     }
+    
 
     private void Move(Vector2 direction)
     {
@@ -91,13 +101,17 @@ public class Player_Controller : MonoBehaviour
             return;
         }
 
-        if (wallSlide && ((moveInput.x > 0 && touching_Directions.OnLeft) || (moveInput.x < 0 && touching_Directions.OnRight)))
+        if (wallSlide && ((moveInput.x > 0 && touching_Directions.OnRight) || (moveInput.x < 0 && touching_Directions.OnLeft)))
         {
             rigidbody.velocity = new Vector2(default, rigidbody.velocity.y);
         }
         else if (!wallJump)
         {
             rigidbody.velocity = new Vector2(direction.x * speed, rigidbody.velocity.y);
+        }
+        else
+        {           
+            rigidbody.velocity = Vector2.Lerp(rigidbody.velocity, new Vector2(direction.x * speed, rigidbody.velocity.y), wallSlideLerp * Time.fixedDeltaTime);
         }
     }
 
