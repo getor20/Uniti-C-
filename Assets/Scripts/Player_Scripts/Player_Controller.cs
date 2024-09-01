@@ -6,11 +6,23 @@ public class Player_Controller : MonoBehaviour
 {
     private Rigidbody2D rigidbody;
 
+    private Vector2 movementDirection;
+    private Touching_Directions touching_Directions;
+
+    [Header("Static")]
+    [Space]
     public float speed = 5f;
     public float jump = 6f;
+    public float slideSpeed = 2f;
 
-    private Vector2 movementDirection = Vector2.zero;
-    private Touching_Directions touching_Directions;
+    [Space]
+
+    [Header("Booleans")]
+    [Space]
+    public bool canMove;
+    public bool wallSlide;
+    public bool sliding;
+    public bool wallJump;
 
     private bool _isFacingRight = true;
 
@@ -41,6 +53,10 @@ public class Player_Controller : MonoBehaviour
 
     private void Move(Vector2 direction)
     {
+        if (!canMove)
+        {
+            return;
+        }
         rigidbody.velocity = new Vector2(movementDirection.x * speed, rigidbody.velocity.y);
     }
 
@@ -75,15 +91,20 @@ public class Player_Controller : MonoBehaviour
             }
             else if (touching_Directions.OnWall)
             {
-                Jump(Vector2.down);
+                WallJump();
             }
         }
     }
 
     private void WallJump()
     {
-        Vector2 wallJump = touching_Directions.OnWall ? Vector2.right : Vector2.left;
-        Jump(Vector2.up + wallJump);
+        canMove = true;
+
+        Vector2 wallDirection = touching_Directions.OnWall ? Vector2.right : Vector2.left;
+        Jump(Vector2.up + wallDirection);
+        
+        wallJump = true;
+        canMove = false;
     }    
 
     private void SetFacingDirection(Vector2 direction)
