@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -6,7 +7,7 @@ public class Player_Controller : MonoBehaviour
 {
     private Rigidbody2D rigidbody;
 
-    private Vector2 movementDirection;
+    private Vector2 moveInput;
     private Touching_Directions touching_Directions;
 
     [Header("Static")]
@@ -19,10 +20,10 @@ public class Player_Controller : MonoBehaviour
 
     [Header("Booleans")]
     [Space]
-    public bool canMove;
-    public bool wallSlide;
-    public bool sliding;
-    public bool wallJump;
+    public bool canMove = true;
+    public bool wallSlide = false;
+    public bool sliding = false;
+    public bool wallJump = false;
 
     private bool _isFacingRight = true;
 
@@ -48,7 +49,39 @@ public class Player_Controller : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Move(movementDirection);
+        Move(moveInput);
+
+        if (!touching_Directions.OnGraund && touching_Directions.OnWall)
+        {
+            if (rigidbody.velocity.y > 0)
+            {
+                wallJump = false;
+                return;
+            }
+
+            if ((moveInput.x >= 0 && touching_Directions.OnRight) || (moveInput.x <= 0 && touching_Directions.OnLeft))
+            {
+                if (!wallSlide)
+                {
+                    sliding = false;
+                }
+                wallSlide = true;
+            }
+            else
+            {
+                wallSlide = false;
+            }
+
+            if (wallSlide && !sliding)
+            {
+                sliding = true;
+            }
+
+            if (wallSlide)
+            {
+                rigidbody.velocity = new Vector2(rigidbody.velocity.x, -slideSpeed);
+            }
+        }
     }
 
     private void Move(Vector2 direction)
@@ -57,7 +90,15 @@ public class Player_Controller : MonoBehaviour
         {
             return;
         }
-        rigidbody.velocity = new Vector2(movementDirection.x * speed, rigidbody.velocity.y);
+
+        if (wallSlide && ((moveInput.x > 0 && touching_Directions.OnLeft) || (moveInput.x < 0 && touching_Directions.OnRight)))
+        {
+            rigidbody.velocity = new Vector2(default, rigidbody.velocity.y);
+        }
+        else if (!wallJump)
+        {
+            rigidbody.velocity = new Vector2(direction.x * speed, rigidbody.velocity.y);
+        }
     }
 
     private void Jump(Vector2 direction)
@@ -68,16 +109,15 @@ public class Player_Controller : MonoBehaviour
     public void OnMove(InputAction.CallbackContext context)
     {
         speed = 5f;
-        movementDirection = context.ReadValue<Vector2>();
-        SetFacingDirection(movementDirection);
+        moveInput = context.ReadValue<Vector2>();
+        SetFacingDirection(moveInput);
     }
 
     public void Acceleration(InputAction.CallbackContext context)
     {
-        if (context.started)
-        {
-            speed = 10;
-        }
+
+        speed = 10;
+        
         
     }
 
@@ -98,14 +138,20 @@ public class Player_Controller : MonoBehaviour
 
     private void WallJump()
     {
-        canMove = true;
-
+        StartCoroutine(DisableMovement(0.05f));
         Vector2 wallDirection = touching_Directions.OnWall ? Vector2.right : Vector2.left;
         Jump(Vector2.up + wallDirection);
         
         wallJump = true;
-        canMove = false;
     }    
+
+    private IEnumerator DisableMovement(float time)
+    {
+        canMove = false;
+        yield return new WaitForSeconds(time);
+        canMove = true;
+    }
+
 
     private void SetFacingDirection(Vector2 direction)
     {
