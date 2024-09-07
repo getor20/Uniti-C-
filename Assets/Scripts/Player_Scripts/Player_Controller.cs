@@ -14,6 +14,7 @@ public class Player_Controller : MonoBehaviour
     [Header("Static")]
     [Space]
     public float speed = 5f;
+    public float ranSpeed = 10f;
     public float jump = 6f;
     public float slideSpeed = 1f;
     public float wallSlideLerp = 10f;
