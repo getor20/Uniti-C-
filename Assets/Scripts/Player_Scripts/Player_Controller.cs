@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,6 +8,7 @@ public class Player_Controller : MonoBehaviour
 {
     private Rigidbody2D rigidbody;
     private Touching_Directions touching_Directions;
+    private Animator_Controller animator_Controller;
 
 
     private Vector2 moveInput;
@@ -14,8 +16,8 @@ public class Player_Controller : MonoBehaviour
     [Header("Static")]
     [Space]
     public float speed = 5f;
-    public float ranSpeed = 10f;
-    public float jump = 6f;
+    public float plusSpeed = 6.5f;
+    public float jump = 5f;
     public float slideSpeed = 1f;
     public float wallSlideLerp = 10f;
 
@@ -28,26 +30,15 @@ public class Player_Controller : MonoBehaviour
     public bool sliding = false;
     public bool wallJump = false;
 
-    private bool _isFacingRight = true;
+    public bool IsMoving {  get; private set; }
 
-    public bool IsFacingRight
-    {
-        get{ return _isFacingRight; }   
-        private set 
-        {
-            if (_isFacingRight != value)
-            {
-                transform.localScale *= new Vector2(-1, 1);
-            }
-
-            _isFacingRight = value;
-        }
-    }
+    public bool IsRunning { get; private set; }
 
     private void Awake()
     {
         rigidbody = GetComponent<Rigidbody2D>();
         touching_Directions = GetComponent<Touching_Directions>();
+        animator_Controller = GetComponent<Animator_Controller>();
     }
 
     private void FixedUpdate()
@@ -102,17 +93,25 @@ public class Player_Controller : MonoBehaviour
             return;
         }
 
+        float currentSpeed = IsRunning ? plusSpeed : speed;
+
+
         if (wallSlide && ((moveInput.x > 0 && touching_Directions.OnRight) || (moveInput.x < 0 && touching_Directions.OnLeft)))
         {
             rigidbody.velocity = new Vector2(default, rigidbody.velocity.y);
         }
         else if (!wallJump)
         {
-            rigidbody.velocity = new Vector2(direction.x * speed, rigidbody.velocity.y);
+            rigidbody.velocity = new Vector2(direction.x * currentSpeed, rigidbody.velocity.y);
         }
         else
         {           
-            rigidbody.velocity = Vector2.Lerp(rigidbody.velocity, new Vector2(direction.x * speed, rigidbody.velocity.y), wallSlideLerp * Time.fixedDeltaTime);
+            rigidbody.velocity = Vector2.Lerp(rigidbody.velocity, new Vector2(direction.x * currentSpeed, rigidbody.velocity.y), wallSlideLerp * Time.fixedDeltaTime);
+        }
+
+        if (moveInput.x != 0 && !wallSlide)
+        {
+            animator_Controller.Flip(moveInput.x);
         }
     }
 
@@ -123,14 +122,21 @@ public class Player_Controller : MonoBehaviour
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        speed = 5f;
         moveInput = context.ReadValue<Vector2>();
-        SetFacingDirection(moveInput);
+
+        IsMoving = moveInput != Vector2.zero;
     }
 
-    public void Acceleration(InputAction.CallbackContext context)
+    public void OnSpidplus(InputAction.CallbackContext context)
     {
-        speed = 10;
+        if (context.started)
+        {
+            IsRunning = true;
+        }
+        else if(context.canceled)
+        {
+            IsRunning = false;
+        }
     }
 
     public void OnJump(InputAction.CallbackContext context)
@@ -162,19 +168,6 @@ public class Player_Controller : MonoBehaviour
         canMove = false;
         yield return new WaitForSeconds(time);
         canMove = true;
-    }
-
-
-    private void SetFacingDirection(Vector2 direction)
-    {
-        if (direction.x > 0 && !IsFacingRight)
-        {
-            IsFacingRight = true;
-        }
-        else if (direction.x < 0 && IsFacingRight)
-        {
-            IsFacingRight = false;
-        }
     }
    
 }
