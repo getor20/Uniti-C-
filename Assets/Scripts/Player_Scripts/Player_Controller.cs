@@ -1,22 +1,21 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Player_Controller : MonoBehaviour
 {
-    private Rigidbody2D rigidbody;
+    public Rigidbody2D Rigidbody { get; private set; }
     private Touching_Directions touching_Directions;
     private Animator_Controller animator_Controller;
 
-
+    
     private Vector2 moveInput;
 
     [Header("Static")]
     [Space]
     public float speed = 5f;
-    public float plusSpeed = 6.5f;
+    public float plusSpeed = 7f;
     public float jump = 5f;
     public float slideSpeed = 1f;
     public float wallSlideLerp = 10f;
@@ -30,13 +29,13 @@ public class Player_Controller : MonoBehaviour
     public bool sliding = false;
     public bool wallJump = false;
 
-    public bool IsMoving {  get; private set; }
-
+    public bool IsWalking { get; private set; }
     public bool IsRunning { get; private set; }
+    public bool IsCrouch { get; private set; }
 
     private void Awake()
     {
-        rigidbody = GetComponent<Rigidbody2D>();
+        Rigidbody = GetComponent<Rigidbody2D>();
         touching_Directions = GetComponent<Touching_Directions>();
         animator_Controller = GetComponent<Animator_Controller>();
     }
@@ -47,7 +46,7 @@ public class Player_Controller : MonoBehaviour
 
         if (!touching_Directions.OnGraund && touching_Directions.OnWall)
         {
-            if (rigidbody.velocity.y > 0)
+            if (Rigidbody.velocity.y > 0)
             {
                 wallJump = false;
                 return;
@@ -73,7 +72,7 @@ public class Player_Controller : MonoBehaviour
 
             if (wallSlide)
             {
-                rigidbody.velocity = new Vector2(rigidbody.velocity.x, -slideSpeed);
+                Rigidbody.velocity = new Vector2(Rigidbody.velocity.x, -slideSpeed);
             }
         }
 
@@ -98,15 +97,15 @@ public class Player_Controller : MonoBehaviour
 
         if (wallSlide && ((moveInput.x > 0 && touching_Directions.OnRight) || (moveInput.x < 0 && touching_Directions.OnLeft)))
         {
-            rigidbody.velocity = new Vector2(default, rigidbody.velocity.y);
+            Rigidbody.velocity = new Vector2(default, Rigidbody.velocity.y);
         }
         else if (!wallJump)
         {
-            rigidbody.velocity = new Vector2(direction.x * currentSpeed, rigidbody.velocity.y);
+            Rigidbody.velocity = new Vector2(direction.x * currentSpeed, Rigidbody.velocity.y);
         }
         else
         {           
-            rigidbody.velocity = Vector2.Lerp(rigidbody.velocity, new Vector2(direction.x * currentSpeed, rigidbody.velocity.y), wallSlideLerp * Time.fixedDeltaTime);
+            Rigidbody.velocity = Vector2.Lerp(Rigidbody.velocity, new Vector2(direction.x * currentSpeed, Rigidbody.velocity.y), wallSlideLerp * Time.fixedDeltaTime);
         }
 
         if (moveInput.x != 0 && !wallSlide)
@@ -117,14 +116,14 @@ public class Player_Controller : MonoBehaviour
 
     private void Jump(Vector2 direction)
     {
-        rigidbody.AddForce(direction * jump, ForceMode2D.Impulse);
+        Rigidbody.AddForce(direction * jump, ForceMode2D.Impulse);
     }
 
     public void OnMove(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
 
-        IsMoving = moveInput != Vector2.zero;
+        IsWalking = moveInput != Vector2.zero;
     }
 
     public void OnSpidplus(InputAction.CallbackContext context)
@@ -136,6 +135,18 @@ public class Player_Controller : MonoBehaviour
         else if(context.canceled)
         {
             IsRunning = false;
+        }
+    }
+
+    public void OnCrouch(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            IsCrouch = true;
+        }
+        else if( context.canceled)
+        {
+            IsCrouch = false;
         }
     }
 
@@ -169,5 +180,5 @@ public class Player_Controller : MonoBehaviour
         yield return new WaitForSeconds(time);
         canMove = true;
     }
-   
+
 }

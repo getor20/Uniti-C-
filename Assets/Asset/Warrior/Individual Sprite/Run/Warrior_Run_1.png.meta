@@ -142,16 +142,16 @@ TextureImporter:
         x: 12
         y: 1
         width: 25
-        height: 29
+        height: 33
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1ae69b3b7ba601c4a8bed8820a5ab2f8
-      internalID: -944165544
+      spriteID: 3492f082a4fe17b46becf4ecdf320831
+      internalID: -110438514
       vertices: []
       indices: 
       edges: []
@@ -167,7 +167,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Warrior_Run_1_0: -944165544
+      Warrior_Run_1_0: -110438514
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

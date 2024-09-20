@@ -3,7 +3,6 @@ using UnityEngine;
 public class Touching_Directions : MonoBehaviour
 {
     private BoxCollider2D TouchingBoxCollider;
-
     public bool OnGraund { get; private set; }
     public bool OnLeft { get; private set; }
     public bool OnRight { get; private set; }
