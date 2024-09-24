@@ -20,7 +20,7 @@ public class Animator_Controller : MonoBehaviour
         _animator.SetBool(PlayerAnimationStrings.IsWalking, _playerController.IsWalking);
         _animator.SetBool(PlayerAnimationStrings.IsGround, _touchingDirections.OnGraund);
         _animator.SetBool(PlayerAnimationStrings.IsCrouch, _playerController.IsCrouch);
-        _animator.SetFloat(PlayerAnimationStrings.yVelocity, _playerController.Rigidbody.velocity.y);
+        _animator.SetFloat(PlayerAnimationStrings.yVelocity, _playerController.rigidBody.velocity.y);
         
     }
 

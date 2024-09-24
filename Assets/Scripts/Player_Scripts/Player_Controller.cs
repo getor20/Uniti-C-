@@ -5,11 +5,11 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Player_Controller : MonoBehaviour
 {
-    public Rigidbody2D Rigidbody { get; private set; }
+    public Rigidbody2D rigidBody { get; private set; }
     private Touching_Directions touching_Directions;
     private Animator_Controller animator_Controller;
 
-    
+
     private Vector2 moveInput;
 
     [Header("Static")]
@@ -35,57 +35,20 @@ public class Player_Controller : MonoBehaviour
 
     private void Awake()
     {
-        Rigidbody = GetComponent<Rigidbody2D>();
+        rigidBody = GetComponent<Rigidbody2D>();
         touching_Directions = GetComponent<Touching_Directions>();
         animator_Controller = GetComponent<Animator_Controller>();
     }
 
     private void FixedUpdate()
     {
-        Move(moveInput);
-
-        if (!touching_Directions.OnGraund && touching_Directions.OnWall)
-        {
-            if (Rigidbody.velocity.y > 0)
-            {
-                wallJump = false;
-                return;
-            }
-
-            if ((moveInput.x >= 0 && touching_Directions.OnRight) || (moveInput.x <= 0 && touching_Directions.OnLeft))
-            {
-                if (!wallSlide)
-                {
-                    sliding = false;
-                }
-                wallSlide = true;
-            }
-            else
-            {
-                wallSlide = false;
-            }
-
-            if (wallSlide && !sliding)
-            {
-                sliding = true;
-            }
-
-            if (wallSlide)
-            {
-                Rigidbody.velocity = new Vector2(Rigidbody.velocity.x, -slideSpeed);
-            }
-        }
-
-        if (touching_Directions.OnGraund)
-        {
-            wallSlide = false;
-            sliding = false;
-            wallJump = false;
-        }
+        Move();
+        WallSlide();
+        OnGround();
     }
-    
 
-    private void Move(Vector2 direction)
+
+    private void Move()
     {
         if (!canMove)
         {
@@ -95,17 +58,17 @@ public class Player_Controller : MonoBehaviour
         float currentSpeed = IsRunning ? plusSpeed : speed;
 
 
-        if (wallSlide && ((moveInput.x > 0 && touching_Directions.OnRight) || (moveInput.x < 0 && touching_Directions.OnLeft)))
+        if (wallSlide && IsMovingTowardsWall())
         {
-            Rigidbody.velocity = new Vector2(default, Rigidbody.velocity.y);
+            rigidBody.velocity = new Vector2(default, rigidBody.velocity.y);
         }
         else if (!wallJump)
         {
-            Rigidbody.velocity = new Vector2(direction.x * currentSpeed, Rigidbody.velocity.y);
+            rigidBody.velocity = new Vector2(moveInput.x * currentSpeed, rigidBody.velocity.y);
         }
         else
-        {           
-            Rigidbody.velocity = Vector2.Lerp(Rigidbody.velocity, new Vector2(direction.x * currentSpeed, Rigidbody.velocity.y), wallSlideLerp * Time.fixedDeltaTime);
+        {
+            rigidBody.velocity = Vector2.Lerp(rigidBody.velocity, new Vector2(moveInput.x * currentSpeed, rigidBody.velocity.y), wallSlideLerp * Time.fixedDeltaTime);
         }
 
         if (moveInput.x != 0 && !wallSlide)
@@ -114,9 +77,68 @@ public class Player_Controller : MonoBehaviour
         }
     }
 
+    private void WallSlide()
+    {
+        if (!touching_Directions.OnGraund && touching_Directions.OnWall)
+        {
+            if (rigidBody.velocity.y > 0)
+            {
+                wallJump = false;
+                return;
+            }
+
+            if(IsMovingTowardsWall())
+            {
+                StartWallSlide();
+            }
+            else
+            {
+                StopWallSlide();
+            }
+        }
+        else
+        {
+            StopWallSlide();
+        }
+    }
+
+    private bool IsMovingTowardsWall()
+    {
+        return ((moveInput.x > 0 && touching_Directions.OnRight) || (moveInput.x < 0 && touching_Directions.OnLeft));
+    }
+
+    private void StartWallSlide()
+    {
+        if (!wallSlide)
+        {
+            rigidBody.velocity = Vector2.zero;
+            sliding = true;
+        }
+
+        wallSlide = true;
+        rigidBody.velocity = new Vector2(0, -slideSpeed);
+    }
+
+    private void StopWallSlide()
+    {
+        wallSlide = false;
+        sliding = false;
+
+    }
+
+    private void OnGround()
+    {
+        if (touching_Directions.OnGraund)
+        {
+            wallSlide = false;
+            sliding = false;
+            wallJump = false;
+        }
+    }
+
     private void Jump(Vector2 direction)
     {
-        Rigidbody.AddForce(direction * jump, ForceMode2D.Impulse);
+        rigidBody.AddForce(direction * jump, ForceMode2D.Impulse);
     }
 
     public void OnMove(InputAction.CallbackContext context)
