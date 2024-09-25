@@ -1,6 +1,7 @@
 using Assets.Scripts.Player_Scripts;
 using System.Collections;
 using System.Diagnostics;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -14,6 +15,8 @@ public class Player_Controller : MonoBehaviour
     private Touching_Directions touching_Directions;
     private Animator_Controller animator_Controller;
 
+    [SerializeField]
+    private TextMeshProUGUI coinsText;
 
     private Vector2 moveInput;
 
@@ -62,6 +65,11 @@ public class Player_Controller : MonoBehaviour
         animator_Controller = GetComponent<Animator_Controller>();
     }
 
+    private void Start()
+    {
+        UpdateCoinsUI(coins);
+    }
+
     private void FixedUpdate()
     {
         Move();
@@ -72,7 +80,13 @@ public class Player_Controller : MonoBehaviour
     public void AddCoins(int value)
     {
         coins += value;
-        UnityEngine.Debug.Log(coins);
+        UpdateCoinsUI(coins);
+
+    }
+
+    private void UpdateCoinsUI(int value)
+    {
+        coinsText.text = $"Coins: {value}";
     }
 
     private void Move()
@@ -107,7 +121,7 @@ public class Player_Controller : MonoBehaviour
 
     private void WallSlide()
     {
-        if (!touching_Directions.OnGraund && touching_Directions.OnWall)
+        if (!touching_Directions.OnGround && touching_Directions.OnWall)
         {
             if (rigidBody.velocity.y > 0)
             {
@@ -156,7 +170,7 @@ public class Player_Controller : MonoBehaviour
 
     private void OnGround()
     {
-        if (touching_Directions.OnGraund)
+        if (touching_Directions.OnGround)
         {
             wallSlide = false;
             sliding = false;
@@ -204,7 +218,7 @@ public class Player_Controller : MonoBehaviour
     {
         if (context.started)
         {
-            if (touching_Directions.OnGraund)
+            if (touching_Directions.OnGround)
             {
                 Jump(Vector2.up);
                 animator_Controller.AnimateJump();

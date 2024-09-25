@@ -3,7 +3,7 @@ using UnityEngine;
 public class Touching_Directions : MonoBehaviour
 {
     private BoxCollider2D TouchingBoxCollider;
-    public bool OnGraund { get; private set; }
+    public bool OnGround { get; private set; }
     public bool OnLeft { get; private set; }
     public bool OnRight { get; private set; }
 
@@ -21,8 +21,18 @@ public class Touching_Directions : MonoBehaviour
 
     private void FixedUpdate()
     {
-        OnGraund = TouchingBoxCollider.Cast(Vector2.down, hits, graundDistans) > 0;
-        if (!OnGraund)
+        CheckGround();
+        CheckWall();
+    } 
+    
+    private void CheckGround()
+    {
+        OnGround = TouchingBoxCollider.Cast(Vector2.down, hits, graundDistans) > 0;
+    }
+
+    private void CheckWall()
+    {
+        if (!OnGround)
         {
             OnLeft = TouchingBoxCollider.Cast(Vector2.left, hits, wallDistans) > 0;
             OnRight = TouchingBoxCollider.Cast(Vector2.right, hits, wallDistans) > 0;
@@ -32,5 +42,6 @@ public class Touching_Directions : MonoBehaviour
             OnLeft = false;
             OnRight = false;
         }
-    } 
+    }
+
 }
