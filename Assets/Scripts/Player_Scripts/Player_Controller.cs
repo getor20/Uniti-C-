@@ -15,24 +15,41 @@ public class Player_Controller : MonoBehaviour
 
     [Header("Static")]
     [Space]
-    public float speed = 5f;
-    public float plusSpeed = 7f;
-    public float jump = 5f;
-    public float slideSpeed = 1f;
-    public float wallSlideLerp = 10f;
+    [SerializeField]
+    private float speed = 5f;
+
+    [SerializeField]
+    private float plusSpeed = 7f;
+
+    [SerializeField]
+    private float jump = 5f;
+
+    [SerializeField]
+    private float slideSpeed = 1f;
+
+    [SerializeField]
+    private float wallSlideLerp = 10f;
 
     [Space]
-
+    [SerializeField]
     [Header("Booleans")]
     [Space]
-    public bool canMove = true;
-    public bool wallSlide = false;
-    public bool sliding = false;
-    public bool wallJump = false;
+    private bool canMove = true;
+
+    [SerializeField]
+    private bool wallSlide = false;
+
+    [SerializeField]
+    private bool sliding = false;
+
+    [SerializeField]
+    private bool wallJump = false;
 
     public bool IsWalking { get; private set; }
     public bool IsRunning { get; private set; }
     public bool IsCrouch { get; private set; }
+
+    private int coins = 0;
 
     private void Awake()
     {
@@ -48,6 +65,10 @@ public class Player_Controller : MonoBehaviour
         OnGround();
     }
 
+    private void AddCoins(int value)
+    {
+        coins += value;
+    }
 
     private void Move()
     {
