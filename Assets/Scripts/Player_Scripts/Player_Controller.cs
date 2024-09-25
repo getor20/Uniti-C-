@@ -1,12 +1,16 @@
 using Assets.Scripts.Player_Scripts;
 using System.Collections;
+using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Player_Controller : MonoBehaviour
 {
-    public Rigidbody2D rigidBody { get; set; }
+    private Rigidbody2D rigidBody { get; set; }
+
+    public Vector2 Velocity => rigidBody.velocity;
+
     private Touching_Directions touching_Directions;
     private Animator_Controller animator_Controller;
 
@@ -65,13 +69,15 @@ public class Player_Controller : MonoBehaviour
         OnGround();
     }
 
-    private void AddCoins(int value)
+    public void AddCoins(int value)
     {
         coins += value;
+        UnityEngine.Debug.Log(coins);
     }
 
     private void Move()
     {
+        
         if (!canMove)
         {
             return;

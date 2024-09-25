@@ -43,7 +43,7 @@ public class Animator_Controller : MonoBehaviour
         _animator.SetBool(_isWalkingHash, _playerController.IsWalking);
         _animator.SetBool(_isGroundedHash, _touchingDirections.OnGraund);
         _animator.SetBool(_isCrouchHash, _playerController.IsCrouch);
-        _animator.SetFloat(_yVelocityHash, _playerController.rigidBody.velocity.y);
+        _animator.SetFloat(_yVelocityHash, _playerController.Velocity.y);
     }
 
     public void Flip(float x)
