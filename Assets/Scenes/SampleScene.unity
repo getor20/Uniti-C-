@@ -320,7 +320,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 148910011}
-  - component: {fileID: 148910012}
   m_Layer: 0
   m_Name: Background
   m_TagString: Untagged
@@ -348,18 +347,6 @@ Transform:
   - {fileID: 181660049}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &148910012
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 148910010}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 15aa2fc84605b4b4486ca25a37fca235, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &181660048
 GameObject:
   m_ObjectHideFlags: 0
@@ -370,6 +357,7 @@ GameObject:
   m_Component:
   - component: {fileID: 181660049}
   - component: {fileID: 181660050}
+  - component: {fileID: 181660051}
   m_Layer: 0
   m_Name: Leyer5
   m_TagString: Untagged
@@ -444,6 +432,21 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &181660051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 181660048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15aa2fc84605b4b4486ca25a37fca235, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  followingTarget: {fileID: 0}
+  parallaxStrength: 1
+  disableVerticalParallax: 0
 --- !u!1 &198046232
 GameObject:
   m_ObjectHideFlags: 0
@@ -618,6 +621,7 @@ GameObject:
   m_Component:
   - component: {fileID: 204088747}
   - component: {fileID: 204088748}
+  - component: {fileID: 204088749}
   m_Layer: 0
   m_Name: Leyer4
   m_TagString: Untagged
@@ -692,6 +696,21 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &204088749
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 204088746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15aa2fc84605b4b4486ca25a37fca235, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  followingTarget: {fileID: 0}
+  parallaxStrength: 0.9
+  disableVerticalParallax: 1
 --- !u!1 &271944380
 GameObject:
   m_ObjectHideFlags: 0
@@ -956,7 +975,7 @@ Camera:
   far clip plane: 15
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 6
   m_Depth: 1
   m_CullingMask:
     serializedVersion: 2
@@ -981,7 +1000,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.0000009536743, y: -1.5, z: -10}
+  m_LocalPosition: {x: 0, y: -0.5, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1120,7 +1139,7 @@ MonoBehaviour:
   m_Follow: {fileID: 730675423}
   m_Lens:
     FieldOfView: 60
-    OrthographicSize: 5
+    OrthographicSize: 6
     NearClipPlane: 5
     FarClipPlane: 15
     Dutch: 0
@@ -1361,6 +1380,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1319474129}
   - component: {fileID: 1319474130}
+  - component: {fileID: 1319474131}
   m_Layer: 0
   m_Name: Leyer3
   m_TagString: Untagged
@@ -1435,6 +1455,21 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1319474131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1319474128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15aa2fc84605b4b4486ca25a37fca235, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  followingTarget: {fileID: 0}
+  parallaxStrength: 0.8
+  disableVerticalParallax: 0
 --- !u!1001 &1559252454
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1763,6 +1798,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1630496271}
   - component: {fileID: 1630496272}
+  - component: {fileID: 1630496273}
   m_Layer: 0
   m_Name: Leyer1
   m_TagString: Untagged
@@ -1837,6 +1873,21 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1630496273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1630496270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15aa2fc84605b4b4486ca25a37fca235, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  followingTarget: {fileID: 0}
+  parallaxStrength: 0.6
+  disableVerticalParallax: 0
 --- !u!1 &1795488023
 GameObject:
   m_ObjectHideFlags: 0
@@ -7296,6 +7347,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2010490522}
   - component: {fileID: 2010490523}
+  - component: {fileID: 2010490524}
   m_Layer: 0
   m_Name: Leyer2
   m_TagString: Untagged
@@ -7370,6 +7422,21 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &2010490524
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2010490521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15aa2fc84605b4b4486ca25a37fca235, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  followingTarget: {fileID: 0}
+  parallaxStrength: 0.7
+  disableVerticalParallax: 0
 --- !u!1001 &4165711233436655046
 PrefabInstance:
   m_ObjectHideFlags: 0
