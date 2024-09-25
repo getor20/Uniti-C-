@@ -1,3 +1,4 @@
+using Assets.Scripts.Player_Scripts;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -5,7 +6,7 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Player_Controller : MonoBehaviour
 {
-    public Rigidbody2D rigidBody { get; private set; }
+    public Rigidbody2D rigidBody { get; set; }
     private Touching_Directions touching_Directions;
     private Animator_Controller animator_Controller;
 
@@ -179,6 +180,7 @@ public class Player_Controller : MonoBehaviour
             if (touching_Directions.OnGraund)
             {
                 Jump(Vector2.up);
+                animator_Controller.AnimateJump();
             }
             else if (touching_Directions.OnWall)
             {

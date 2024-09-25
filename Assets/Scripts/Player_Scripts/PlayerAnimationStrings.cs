@@ -1,4 +1,6 @@
-﻿namespace Assets.Scripts.Player_Scripts
+﻿using UnityEditor;
+
+namespace Assets.Scripts.Player_Scripts
 {
     public class PlayerAnimationStrings
     {
@@ -7,6 +9,7 @@
         public const string IsWalking = "IsWalking";
         public const string IsCrouch = "IsCrouch";
         public const string yVelocity = "yVelocity";
+        public const string Jump = "Jump";
 
     }
 }
