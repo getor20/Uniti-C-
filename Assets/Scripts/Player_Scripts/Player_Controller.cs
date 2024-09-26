@@ -1,9 +1,7 @@
-using Assets.Scripts.Player_Scripts;
 using System.Collections;
-using System.Diagnostics;
-using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Player_Controller : MonoBehaviour
@@ -16,7 +14,7 @@ public class Player_Controller : MonoBehaviour
     private Animator_Controller animator_Controller;
 
     [SerializeField]
-    private TextMeshProUGUI coinsText;
+    private Text coinsText;
 
     private Vector2 moveInput;
 

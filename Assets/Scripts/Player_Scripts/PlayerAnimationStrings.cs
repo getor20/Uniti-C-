@@ -1,6 +1,4 @@
-﻿using UnityEditor;
-
-namespace Assets.Scripts.Player_Scripts
+﻿namespace Assets.Scripts.Player_Scripts
 {
     public class PlayerAnimationStrings
     {

@@ -8,9 +8,6 @@ public class Background : MonoBehaviour
     [SerializeField, Range(0f, 1f)]
     private float parallaxStrength = 0.1f;
 
-    [SerializeField]
-    private bool disableVerticalParallax;
-
     private Vector3 targetPreviousPosition;
 
     private void Start()
@@ -27,11 +24,8 @@ public class Background : MonoBehaviour
     {
          var delta = followingTarget.position - targetPreviousPosition;
 
-        if (disableVerticalParallax)
-        {
-             delta.y = 0;
-        }
-
+        delta.y = 0;
+        
         targetPreviousPosition = followingTarget.position;
 
         transform.position += delta * parallaxStrength;
