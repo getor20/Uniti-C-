@@ -84,7 +84,7 @@ public class Player_Controller : MonoBehaviour
 
     private void UpdateCoinsUI(int value)
     {
-        coinsText.text = $"Coins:{value}";
+        coinsText.text = $"{value}";
     }
 
     private void Move()
