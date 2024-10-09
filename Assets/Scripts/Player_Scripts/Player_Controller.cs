@@ -1,4 +1,7 @@
+using System;
 using System.Collections;
+using TMPro;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -10,13 +13,17 @@ public class Player_Controller : MonoBehaviour
 
     public Vector2 Velocity => rigidBody.velocity;
 
+    private Vector2 moveInput;
+
     private Touching_Directions touching_Directions;
     private Animator_Controller animator_Controller;
 
     [SerializeField]
-    private Text coinsText;
+    private TMP_Text coinsText;
 
-    private Vector2 moveInput;
+    [SerializeField]
+    private Image HpBar;
+
 
     [Header("Static")]
     [Space]
@@ -56,6 +63,12 @@ public class Player_Controller : MonoBehaviour
 
     private int coins = 0;
 
+    private int hp = 100;
+
+    private int maxHP = 100;
+
+    private int minHP = 1;
+
     private void Awake()
     {
         rigidBody = GetComponent<Rigidbody2D>();
@@ -66,6 +79,7 @@ public class Player_Controller : MonoBehaviour
     private void Start()
     {
         UpdateCoinsUI(coins);
+        UpdateHpBar();
     }
 
     private void FixedUpdate()
@@ -179,6 +193,7 @@ public class Player_Controller : MonoBehaviour
     private void Jump(Vector2 direction)
     {
         rigidBody.AddForce(direction * jump, ForceMode2D.Impulse);
+        UpdateHP(-10);
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -231,8 +246,8 @@ public class Player_Controller : MonoBehaviour
     private void WallJump()
     {
         StartCoroutine(DisableMovement(0.05f));
-        Vector2 wallDirection = touching_Directions.OnWall ? Vector2.right : Vector2.left;
-        Jump(Vector2.up + wallDirection);
+        Vector2 wallDirection = touching_Directions.OnLeft ? Vector2.right : Vector2.left;
+        Jump(Vector2.up + wallDirection);   
         
         wallJump = true;
     }    
@@ -242,6 +257,17 @@ public class Player_Controller : MonoBehaviour
         canMove = false;
         yield return new WaitForSeconds(time);
         canMove = true;
+    }
+
+    private void UpdateHP(int value)
+    {
+        hp = Mathf.Clamp(hp + value, 0, maxHP);
+        UpdateHpBar();
+    }
+
+    private void UpdateHpBar()
+    {
+        HpBar.fillAmount = Mathf.Clamp(hp / (float)maxHP, 0f, (float)minHP);
     }
 
 }
