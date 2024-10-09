@@ -8351,6 +8351,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8795993448235215387, guid: d2b557513c249f440aeef76278e124e5, type: 3}
+      propertyPath: hp
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 8795993448235215387, guid: d2b557513c249f440aeef76278e124e5, type: 3}
       propertyPath: HpBar
       value: 
       objectReference: {fileID: 34980068}

@@ -63,7 +63,9 @@ public class Player_Controller : MonoBehaviour
 
     private int coins = 0;
 
-    private int hp = 100;
+    [SerializeField]
+    [Space]
+    private int hp = 50;
 
     private int maxHP = 100;
 
@@ -193,7 +195,7 @@ public class Player_Controller : MonoBehaviour
     private void Jump(Vector2 direction)
     {
         rigidBody.AddForce(direction * jump, ForceMode2D.Impulse);
-        UpdateHP(-10);
+        UpdateHP(+10);
     }
 
     public void OnMove(InputAction.CallbackContext context)
