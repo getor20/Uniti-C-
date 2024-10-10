@@ -195,7 +195,7 @@ public class Player_Controller : MonoBehaviour
     private void Jump(Vector2 direction)
     {
         rigidBody.AddForce(direction * jump, ForceMode2D.Impulse);
-        UpdateHP(+10);
+        UpdateHP(-10);
     }
 
     public void OnMove(InputAction.CallbackContext context)
